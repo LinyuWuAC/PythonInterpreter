@@ -162,7 +162,7 @@ public:
                     break;
                 back = back / 10 + str_data[i] - '0';
             }
-            return front + back;
+            return front + back / 10;
         }
         return 0;
     }

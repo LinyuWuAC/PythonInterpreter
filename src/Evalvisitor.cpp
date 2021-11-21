@@ -375,7 +375,7 @@ antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
                     break;
                 back = back / 10 + temp[i] - '0';
             }
-            return Var().setFloat(front + back);
+            return Var().setFloat(front + back / 10);
         }
         return Var().setInt(BigInt::int2048(temp));
     }
