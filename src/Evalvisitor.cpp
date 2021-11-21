@@ -64,20 +64,26 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
         return visitTestlist(testlist_array[0]);
     }
     if (!ctx->augassign()) {
-        auto var_name_array = testlist_array[0]->test();
-        auto var_data_array = testlist_array[1]->test();
-        if (var_data_array.size() < var_name_array.size()) {
-            visitTest(var_data_array[0]);
-            for (int i = 0; i < var_name_array.size(); ++i) {
-                auto var_name = var_name_array[i]->getText();
-                scope.registerVar(var_name, return_tests[i].as<Var>());
+        auto var_data_array = testlist_array[testlist_array.size() - 1]->test();
+        std::vector<Var> treated_var_data_array;
+        for (int i = 0; i < var_data_array.size(); ++i)
+            treated_var_data_array.push_back(visitTest(var_data_array[i]).as<Var>());
+        if (var_data_array.size() < testlist_array[0]->test().size()) {
+            for (int i = testlist_array.size() - 2; i >= 0; --i) {
+                auto var_name_array = testlist_array[i]->test();
+                for (int j = 0; j < var_name_array.size(); ++j) {
+                    auto var_name = var_name_array[j]->getText();
+                    scope.registerVar(var_name, return_tests[j].as<Var>());
+                }
             }
             return Var().setEmpty();
         }
-        for (int i = 0; i < var_name_array.size(); ++i) {
-            auto var_name = var_name_array[i]->getText();
-            auto var_data = visitTest(var_data_array[i]).as<Var>();
-            scope.registerVar(var_name, var_data);
+        for (int i = testlist_array.size() - 2; i >= 0; --i) {
+            auto var_name_array = testlist_array[i]->test();
+            for (int j = 0; j < var_name_array.size(); ++j) {
+                auto var_name = var_name_array[j]->getText();
+                scope.registerVar(var_name, treated_var_data_array[j]);
+            }
         }
         return Var().setEmpty();
     }

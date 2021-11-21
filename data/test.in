@@ -1,12 +1,4 @@
-
-def foo(a, b, i):
-	print("wow", a, b)
-	i -= 1
-	if i == 3:
-		return a, b
-	a, b = foo(b, a, i)
-	print(a, b)
-	return b, a
-
-foo(1, 2, 5)
-#print(a, b)
+a = 1
+b = 2
+c = b = a = 1
+print(a, b)
