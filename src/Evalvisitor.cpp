@@ -362,7 +362,22 @@ antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
         throw Exception(ctx->NAME()->getText(), UNDEFINED);
     }
     else if (ctx->NUMBER()) {
-        return Var().setInt(BigInt::int2048(ctx->NUMBER()->getText()));
+        std::string temp = ctx->NUMBER()->getText();
+        if (temp.find('.') != temp.npos) {
+            double front = 0, back = 0;
+            for (int i = 0; i < temp.size(); ++i) {
+                if (temp[i] == '.')
+                    break;
+                front = front * 10 + temp[i] - '0';
+            }
+            for (int i = temp.size() - 1; i >= 0; --i) {
+                if (temp[i] == '.')
+                    break;
+                back = back / 10 + temp[i] - '0';
+            }
+            return Var().setFloat(front + back);
+        }
+        return Var().setInt(BigInt::int2048(temp));
     }
     else if (ctx->NONE())
         return Var().setNone();

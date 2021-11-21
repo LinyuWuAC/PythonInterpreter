@@ -151,10 +151,18 @@ public:
         if (type == 2)
             return float_data;
         if (type == 3) {
-            double res = 0;
-            for (int i = 0; i < str_data.size(); ++i)
-                res = res * 10 + str_data[i] - '0';
-            return res;
+            double front = 0, back = 0;
+            for (int i = 0; i < str_data.size(); ++i) {
+                if (str_data[i] == '.')
+                    break;
+                front = front * 10 + str_data[i] - '0';
+            }
+            for (int i = str_data.size() - 1; i >= 0; --i) {
+                if (str_data[i] == '.')
+                    break;
+                back = back / 10 + str_data[i] - '0';
+            }
+            return front + back;
         }
         return 0;
     }
@@ -256,13 +264,16 @@ public:
     }
 
     friend bool operator == (const Var &a, const Var &b) {
+        if (a.type == 4 || b.type == 4)
+            return a.type == b.type;
         if (a.type == 3 && b.type == 3)
             return a.str_data == b.str_data;
         if (a.type == 3 || b.type == 3)
             return false; // throw
         int max_type = std::max(a.type, b.type);
-        if (max_type == 2)
+        if (max_type == 2) {
             return a.toFloat() == b.toFloat();
+        }
         if (max_type == 1)
             return a.toInt() == b.toInt();
         return a.bool_data == b.bool_data;
