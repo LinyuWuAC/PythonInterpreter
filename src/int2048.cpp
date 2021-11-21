@@ -420,19 +420,20 @@ namespace BigInt {
         }
         downplay(m, m);
         TA = temporary_a * TA;
+        TA.sign = a.sign * b.sign;
         TA.shift(-2 * m);
-        temporary_a = a;
-        temporary_b = b;
-        if (a.sign * b.sign < 0) {
-            temporary_a.sign = -1;
-            temporary_b.sign = 1;
+        if (b.sign > 0) {
+            while ((TA + int2048(1)) * b <= a)
+                TA += int2048(1);
+            while (TA * b > a)
+                TA -= int2048(1);
         }
-        else
-            temporary_a.sign = temporary_b.sign = 1;
-        while ((TA + int2048(1)) * temporary_b <= temporary_a)
-            TA += int2048(1);
-        while (TA * temporary_b > temporary_a)
-            TA -= int2048(1);
+        else {
+            while ((TA - int2048(1)) * b <= a)
+                TA -= int2048(1);
+            while (TA * b > a)
+                TA += int2048(1);
+        }
         return TA;
     }
 
