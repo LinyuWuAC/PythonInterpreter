@@ -9,7 +9,7 @@
 
 Scope scope;
 Def def;
-antlrcpp::Any return_tests;
+std::vector<antlrcpp::Any> return_tests;
 
 antlrcpp::Any EvalVisitor::visitFile_input(Python3Parser::File_inputContext *ctx) {
     return visitChildren(ctx);
@@ -68,7 +68,11 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
         auto var_data_array = testlist_array[1]->test();
         if (var_data_array.size() < var_name_array.size()) {
             visitTest(var_data_array[0]);
-            var_data_array = return_tests.as<std::vector<Python3Parser::TestContext *>>();
+            for (int i = 0; i < var_name_array.size(); ++i) {
+                auto var_name = var_name_array[i]->getText();
+                scope.registerVar(var_name, return_tests[i].as<Var>());
+            }
+            return Var().setEmpty();
         }
         for (int i = 0; i < var_name_array.size(); ++i) {
             auto var_name = var_name_array[i]->getText();
@@ -121,7 +125,9 @@ antlrcpp::Any EvalVisitor::visitFlow_stmt(Python3Parser::Flow_stmtContext *ctx) 
     auto test = ctx->return_stmt()->testlist()->test();
     if (test.size() == 1)
         return visitTest(test[0]);
-    return_tests = test;
+    return_tests.clear();
+    for (auto x : test)
+        return_tests.push_back(visitTest(x));
     return Var().setReturn();
 }
 

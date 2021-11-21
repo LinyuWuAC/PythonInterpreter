@@ -1,5 +1,12 @@
-a = True
-print(int(a))
-print(str(a))
-print(float(a))
-print(bool(a))
+
+def foo(a, b, i):
+	print("wow", a, b)
+	i -= 1
+	if i == 3:
+		return a, b
+	a, b = foo(b, a, i)
+	print(a, b)
+	return b, a
+
+foo(1, 2, 5)
+#print(a, b)
