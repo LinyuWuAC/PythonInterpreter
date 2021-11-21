@@ -1,2 +1,5 @@
-a = 1.5
-print(a)
+a = True
+print(int(a))
+print(str(a))
+print(float(a))
+print(bool(a))

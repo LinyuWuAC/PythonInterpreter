@@ -338,13 +338,13 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
         return Var().setEmpty();
     }
     if (func_name == "bool")
-        return args_array[0].second.toBool(); // more than two args throw
+        return Var().setBool(args_array[0].second.toBool()); // more than two args throw
     if (func_name == "int")
-        return args_array[0].second.toInt();
+        return Var().setInt(args_array[0].second.toInt());
     if (func_name == "float")
-        return args_array[0].second.toFloat();
+        return Var().setFloat(args_array[0].second.toFloat());
     if (func_name == "str")
-        return args_array[0].second.toStr();
+        return Var().setStr(args_array[0].second.toStr());
 }
 
 antlrcpp::Any EvalVisitor::visitTrailer(Python3Parser::TrailerContext *ctx) {

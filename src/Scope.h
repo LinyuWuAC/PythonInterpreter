@@ -134,9 +134,7 @@ public:
         if (type == 1)
             return int_data;
         if (type == 2) {
-            std::stringstream temp;
-            temp << std::setprecision(8);
-            return BigInt::int2048(temp.str());
+            return BigInt::int2048((long long)(float_data));
         }
         if (type == 3)
             return BigInt::int2048(str_data);
@@ -151,6 +149,12 @@ public:
         if (type == 2)
             return float_data;
         if (type == 3) {
+            if (str_data.find('.') == str_data.npos) {
+                double res = 0;
+                for (int i = 0; i < str_data.size(); ++i)
+                    res = res * 10 + str_data[i] - '0';
+                return res;
+            }
             double front = 0, back = 0;
             for (int i = 0; i < str_data.size(); ++i) {
                 if (str_data[i] == '.')
@@ -169,7 +173,7 @@ public:
 
     std::string toStr() const {
         if (type == 0)
-            return std::to_string(bool_data);
+            return (bool_data ? "True" : "False");
         if (type == 1)
             return int_data.toString();
         if (type == 2)
@@ -297,7 +301,7 @@ public:
         else if (type == 1)
             int_data.print();
         else if (type == 2)
-            std::cout << float_data;
+            std::cout << std::fixed << std::setprecision(6) << float_data;
         else if (type == 3)
             std::cout << str_data;
         else
