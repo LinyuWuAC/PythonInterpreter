@@ -290,7 +290,7 @@ public:
         else if (type == 3)
             std::cout << str_data;
         else
-            std::cout << "Get None! ";
+            std::cout << "None";
     }
 };
 

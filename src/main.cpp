@@ -8,8 +8,8 @@ using namespace antlr4;
 //todo: regenerating files in directory named "generated" is dangerous.
 //       if you really need to regenerate,please ask TA for help.
 int main(int argc, const char* argv[]){
-    freopen("test.in", "r", stdin);
-    freopen("test.out", "w", stdout);
+//    freopen("test.in", "r", stdin);
+//    freopen("test.out", "w", stdout);
     //todo:please don't modify the code below the construction of ifs if you want to use visitor mode
     ANTLRInputStream input(std::cin);
     Python3Lexer lexer(&input);
