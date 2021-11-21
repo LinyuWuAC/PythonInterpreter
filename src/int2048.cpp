@@ -422,6 +422,11 @@ namespace BigInt {
         TA = temporary_a * TA;
         TA.sign = a.sign * b.sign;
         TA.shift(-2 * m);
+        if (!TA.n) {
+            TA.n = 1;
+            TA.a.clear();
+            TA.a.push_back(0);
+        }
         if (b.sign > 0) {
             while ((TA + int2048(1)) * b <= a)
                 TA += int2048(1);
@@ -429,11 +434,12 @@ namespace BigInt {
                 TA -= int2048(1);
         }
         else {
-            while ((TA - int2048(1)) * b <= a)
+            while (TA * b < a)
                 TA -= int2048(1);
-            while (TA * b > a)
+            while ((TA + int2048(1)) * b >= a)
                 TA += int2048(1);
         }
+        TA.setzero();
         return TA;
     }
 
