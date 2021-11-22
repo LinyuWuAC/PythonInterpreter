@@ -1,0 +1,10 @@
+print("1000")
+print('1000')
+a = '1000'
+a *= 2
+print(a)
+a += a
+print(a)
+b = '1'
+a += b
+print(a)

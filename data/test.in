@@ -1,10 +1,8 @@
+def fun(a, b):
+	if not a or not b:
+		print(a, b)
+		return a + b
+	fun(a - 1, b)
+	fun(a, b - 1)
 
-b = 1
-def fun():
-	if b == 1:
-		a = 1
-	else:
-		a = -1
-	print(a)
-fun()	
-print(a)
+fun(5, 5)

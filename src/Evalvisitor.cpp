@@ -53,8 +53,10 @@ antlrcpp::Any EvalVisitor::visitSimple_stmt(Python3Parser::Simple_stmtContext *c
 
 antlrcpp::Any EvalVisitor::visitSmall_stmt(Python3Parser::Small_stmtContext *ctx) {
     auto expr_stmt = ctx->expr_stmt();
-    if (expr_stmt)
-        return visitExpr_stmt(expr_stmt);
+    if (expr_stmt) {
+        visitExpr_stmt(expr_stmt);
+        return Var().setEmpty();
+    }
     return visitFlow_stmt(ctx->flow_stmt());
 }
 

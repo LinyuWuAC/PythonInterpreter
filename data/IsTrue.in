@@ -1,0 +1,7 @@
+a = True
+print(a == True)
+print(1 == True)
+print(1.0 == True)
+print("1" == True)
+print((-1 + 2) == True)
+print((-1.0 + 2) == True)
