@@ -327,12 +327,11 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
                 scope.registerVar(para_array[i], init_array[i]);
         scope.intoFunc();
         if (!args_array.empty()) {
-            if (args_array[0].first == "")
-                for (int i = 0; i < args_array.size(); ++i)
+            for (int i = 0; i < args_array.size(); ++i)
+                if (args_array[i].first == "")
                     scope.registerVar(para_array[i], args_array[i].second);
-            else
-                for (auto & x : args_array)
-                    scope.registerVar(x.first, x.second);
+                else
+                    scope.registerVar(args_array[i].first, args_array[i].second);
         }
         auto res = visitSuite(def.queryFuncSuite(func_name)).as<Var>();
         scope.outOfFunc();

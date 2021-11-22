@@ -1,4 +1,4 @@
-a = 1
-b = 2
-c = b = a = 1
-print(a, b)
+def foo(a, b, c, d):
+	print(a, b, c, d)
+
+foo(1, 2, d = 1, c = 2)
