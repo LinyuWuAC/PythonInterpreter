@@ -76,6 +76,7 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
                     scope.registerVar(var_name, return_tests[j].as<Var>());
                 }
             }
+            return_tests.clear();
             return Var().setEmpty();
         }
         for (int i = testlist_array.size() - 2; i >= 0; --i) {
@@ -347,6 +348,7 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
                 std::cout << " ";
             }
             std::cout << std::endl;
+            return_tests.clear();
             return Var().setEmpty();
         }
         for (auto x : args_array) {
