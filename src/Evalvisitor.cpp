@@ -290,8 +290,8 @@ antlrcpp::Any EvalVisitor::visitTerm(Python3Parser::TermContext *ctx) {
             res = res / visitFactor(factor_array[i + 1]);
         }
         else if (temp == "/") {
-            if (res.type == 1)
-                res.setFloat(res.int_data.toDouble());
+            if (res.type != 2)
+                res.setFloat(res.toFloat());
             res = res / visitFactor(factor_array[i + 1]);
         }
         else if (temp == "%")
@@ -328,7 +328,7 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
         scope.intoFunc();
         if (!args_array.empty()) {
             for (int i = 0; i < args_array.size(); ++i)
-                if (args_array[i].first == "")
+                if (args_array[i].first.empty())
                     scope.registerVar(para_array[i], args_array[i].second);
                 else
                     scope.registerVar(args_array[i].first, args_array[i].second);

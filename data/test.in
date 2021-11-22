@@ -1,4 +1,4 @@
-def foo(a, b, c, d):
-	print(a, b, c, d)
-
-foo(1, 2, d = 1, c = 2)
+print(1 / 5)
+print(True / 5)
+print(5 % True)
+print(5 / True)

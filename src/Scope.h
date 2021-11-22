@@ -227,7 +227,7 @@ public:
     }
 
     friend Var operator / (const Var &a, const Var &b) {
-        if (a.type == 3 || b.type == 3 || a.type == 0 || b.type == 0)
+        if (a.type == 3 || b.type == 3)
             return Var().setNone();
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
@@ -236,8 +236,8 @@ public:
     }
 
     friend Var operator % (const Var &a, const Var &b) {
-        if (a.type == 1 && b.type == 1)
-            return Var().setInt(a.int_data % b.int_data);
+        if (a.type <= 1 && b.type <= 1)
+            return Var().setInt(a.toInt() % b.toInt());
         return Var().setNone();
     }
 
