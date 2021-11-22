@@ -341,6 +341,14 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
     }
     auto args_array = visitTrailer(ctx->trailer()).as<std::vector<std::pair<std::string, Var>>>();
     if (func_name == "print") {
+        if (!return_tests.empty()) {
+            for (auto x : return_tests) {
+                x.as<Var>().print();
+                std::cout << " ";
+            }
+            std::cout << std::endl;
+            return Var().setEmpty();
+        }
         for (auto x : args_array) {
             x.second.print();
             std::cout << " ";
