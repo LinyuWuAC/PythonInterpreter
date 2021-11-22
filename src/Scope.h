@@ -150,13 +150,13 @@ public:
             return float_data;
         if (type == 3) {
             if (str_data.find('.') == str_data.npos) {
-                double res = 0;
-                for (int i = 0; i < str_data.size(); ++i)
+                double res = 0, flag = (str_data[0] == '-' ? -1 : 1);
+                for (int i = 0 + (str_data[0] == '-'); i < str_data.size(); ++i)
                     res = res * 10 + str_data[i] - '0';
-                return res;
+                return res * flag;
             }
-            double front = 0, back = 0;
-            for (int i = 0; i < str_data.size(); ++i) {
+            double front = 0, back = 0, flag = (str_data[0] == '-' ? -1 : 1);
+            for (int i = 0 + (str_data[0] == '-'); i < str_data.size(); ++i) {
                 if (str_data[i] == '.')
                     break;
                 front = front * 10 + str_data[i] - '0';
@@ -166,7 +166,7 @@ public:
                     break;
                 back = back / 10 + str_data[i] - '0';
             }
-            return front + back / 10;
+            return flag * (front + back / 10);
         }
         return 0;
     }

@@ -196,7 +196,7 @@ namespace BigInt {
         int res = 0;
         for (int i = limit; i >= 0; --i)
             res = res * BASE + a[i];
-        return res;
+        return res * sign;
     }
 
     lint int2048::toLongLong() const {
@@ -204,14 +204,14 @@ namespace BigInt {
         lint res = 0;
         for (int i = limit; i >= 0; --i)
             res = res * BASE + a[i];
-        return res;
+        return res * sign;
     }
 
     double int2048::toDouble() const {
         double res = 0;
         for (int i = n - 1; i >= 0; --i)
             res = res * BASE + a[i];
-        return res;
+        return res * sign;
     }
 
     std::string int2048::toString() const {
