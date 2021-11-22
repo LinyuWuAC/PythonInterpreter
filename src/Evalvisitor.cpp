@@ -109,7 +109,7 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
     else if (temp == "/=") {
         auto res = scope.queryVar(var_name); // throw * 3
         if (res.second.type <= 1)
-            res.second.setFloat(res.second.int_data.toDouble());
+            res.second.setFloat(res.second.toFloat());
         scope.registerVar(var_name, res.second / var_delta);
     }
     else if (temp == "//=") {

@@ -1,8 +1,5 @@
-def fun(a, b):
-	if not a or not b:
-		print(a, b)
-		return a + b
-	fun(a - 1, b)
-	fun(a, b - 1)
-
-fun(5, 5)
+i = 0
+if i:
+	print(1)
+elif not i:
+	print(0)
