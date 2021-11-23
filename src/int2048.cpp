@@ -90,6 +90,11 @@ namespace BigInt {
     }
 
     void int2048::setzero() {
+        if (!n) {
+            a.resize(1);
+            a[0] = 0;
+            n = 1;
+        }
         if (n == 1 && a[0] == 0)
             sign = 1;
     }

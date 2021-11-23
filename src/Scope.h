@@ -133,9 +133,8 @@ public:
             return BigInt::int2048(bool_data);
         if (type == 1)
             return int_data;
-        if (type == 2) {
+        if (type == 2)
             return BigInt::int2048((long long)(float_data));
-        }
         if (type == 3)
             return BigInt::int2048(str_data);
         return BigInt::int2048();
