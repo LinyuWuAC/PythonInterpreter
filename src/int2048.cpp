@@ -154,10 +154,7 @@ namespace BigInt {
             v /= BASE;
         }
         n = a.size();
-        if (!n) {
-            n = 1;
-            a.push_back(0);
-        }
+        setzero();
     }
 
     int2048::int2048(const std::string &s) {

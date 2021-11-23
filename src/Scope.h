@@ -179,7 +179,7 @@ public:
             return std::to_string(float_data);
         if (type == 3)
             return str_data;
-        return "";
+        return "None";
     }
 
     friend Var operator + (const Var &a, const Var &b) {
