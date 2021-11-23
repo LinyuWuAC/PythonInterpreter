@@ -249,7 +249,7 @@ antlrcpp::Any EvalVisitor::visitComparison(Python3Parser::ComparisonContext *ctx
     std::vector<Var> var_array;
     var_array.push_back(visitArith_expr(arith_array[0]).as<Var>());
     for (int i = 0; i < op_array.size(); ++i) {
-        var_array.push_back(visitArith_expr(arith_array[i]).as<Var>());
+        var_array.push_back(visitArith_expr(arith_array[i + 1]).as<Var>());
         std::string temp = op_array[i]->getText();
         if (temp == "<")
             state &= (var_array[i] < var_array[i + 1]);
