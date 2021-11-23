@@ -175,9 +175,8 @@ public:
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
             return Var().setFloat(a.toFloat() + b.toFloat());
-        if (max_type == 1)
+        if (max_type <= 1)
             return Var().setInt(a.toInt() + b.toInt());
-        return Var().setBool(a.toBool() + b.toBool());
     }
 
     friend Var operator - (const Var &a, const Var &b) {
@@ -186,9 +185,8 @@ public:
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
             return Var().setFloat(a.toFloat() - b.toFloat());
-        if (max_type == 1)
+        if (max_type <= 1)
             return Var().setInt(a.toInt() - b.toInt());
-        return Var().setBool(a.toBool() - b.toBool());
     }
 
     friend Var operator * (const Var &a, const Var &b) {
@@ -206,9 +204,8 @@ public:
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
             return Var().setFloat(a.toFloat() * b.toFloat());
-        if (max_type == 1)
+        if (max_type <= 1)
             return Var().setInt(a.toInt() * b.toInt());
-        return Var().setBool(a.toBool() * b.toBool());
     }
 
     friend Var operator / (const Var &a, const Var &b) {
@@ -217,9 +214,8 @@ public:
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
             return Var().setFloat(a.toFloat() / b.toFloat());
-        if (max_type == 1)
+        if (max_type <= 1)
             return Var().setInt(a.toInt() / b.toInt());
-        return Var().setBool(a.toBool() / b.toBool());
     }
 
     friend Var operator % (const Var &a, const Var &b) {

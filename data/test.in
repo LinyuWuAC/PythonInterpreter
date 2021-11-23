@@ -1,1 +1,1 @@
-print(int(-95262342234.234))
+print(True / True)
