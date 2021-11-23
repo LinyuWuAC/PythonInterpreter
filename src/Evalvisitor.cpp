@@ -245,11 +245,11 @@ antlrcpp::Any EvalVisitor::visitComparison(Python3Parser::ComparisonContext *ctx
     auto op_array = ctx->comp_op();
     if (arith_array.size() == 1)
         return visitArith_expr(arith_array[0]);
-    bool state = 1;
+    bool state = true;
     std::vector<Var> var_array;
-    for (auto x : arith_array)
-        var_array.push_back(visitArith_expr(x).as<Var>());
+    var_array.push_back(visitArith_expr(arith_array[0]).as<Var>());
     for (int i = 0; i < op_array.size(); ++i) {
+        var_array.push_back(visitArith_expr(arith_array[i]).as<Var>());
         std::string temp = op_array[i]->getText();
         if (temp == "<")
             state &= (var_array[i] < var_array[i + 1]);
@@ -384,6 +384,11 @@ antlrcpp::Any EvalVisitor::visitTrailer(Python3Parser::TrailerContext *ctx) {
     return std::vector<std::pair<std::string, Var>>();
 }
 
+/*
+ *  function:
+ *      deal with NAME, NUMBER(int and float), NONE(), TRUE(bool),
+ */
+
 antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
     if (ctx->NAME()) {
         auto res = scope.queryVar(ctx->NAME()->getText());
@@ -426,9 +431,24 @@ antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
     return Var().setStr(res);
 }
 
+/*
+ *  function:
+ *      visit every test
+ *  return value:
+ *      Var of bool
+ *      Var of anything
+ */
+
 antlrcpp::Any EvalVisitor::visitTestlist(Python3Parser::TestlistContext *ctx) {
     return visitChildren(ctx);
 }
+
+/*
+ *  function:
+ *      combine argument into a vector
+ *  return value:
+ *      vector: pair: name and value
+ */
 
 antlrcpp::Any EvalVisitor::visitArglist(Python3Parser::ArglistContext *ctx) {
 //    std::cout << "Get visitArglist!" << std::endl;
@@ -448,6 +468,7 @@ antlrcpp::Any EvalVisitor::visitArglist(Python3Parser::ArglistContext *ctx) {
  *      pair: name and value
  *      pair: "" and value
  */
+
 antlrcpp::Any EvalVisitor::visitArgument(Python3Parser::ArgumentContext *ctx) {
     auto test_array = ctx->test();
     if (test_array.size() == 1) {

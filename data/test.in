@@ -1,4 +1,5 @@
-s = "-23423423444444444444444444444444444444444444444444444442"
-print(s * 0)
-print(s * True)
-print(s * False)
+def f():
+	print("Hello")
+	return 1
+
+print(2 == f() == f())
