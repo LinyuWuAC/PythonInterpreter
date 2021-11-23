@@ -208,8 +208,9 @@ public:
     }
 
     friend Var operator * (const Var &a, const Var &b) {
-        if ((a.type == 1 && b.type == 3) || (a.type == 3 && b.type == 1)) {
-            int times = a.type == 1 ? a.int_data.toInt() : b.int_data.toInt();
+        if ((a.type <= 1 && b.type == 3) || (a.type == 3 && b.type <= 1)) {
+            BigInt::int2048 temp_times = a.type <= 1 ? a.toInt() : b.toInt();
+            int times = temp_times.toInt();
             std::string res = "";
             std::string delta = a.type == 3 ? a.str_data : b.str_data;
             for (int i = 0; i < times; ++i)
