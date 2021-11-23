@@ -68,8 +68,6 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
     if (!ctx->augassign()) {
         auto var_data_array = testlist_array[testlist_array.size() - 1]->test();
         std::vector<Var> treated_var_data_array;
-        for (int i = 0; i < var_data_array.size(); ++i)
-            treated_var_data_array.push_back(visitTest(var_data_array[i]).as<Var>());
         if (var_data_array.size() < testlist_array[0]->test().size()) {
             for (int i = testlist_array.size() - 2; i >= 0; --i) {
                 auto var_name_array = testlist_array[i]->test();
@@ -85,7 +83,7 @@ antlrcpp::Any EvalVisitor::visitExpr_stmt(Python3Parser::Expr_stmtContext *ctx) 
             auto var_name_array = testlist_array[i]->test();
             for (int j = 0; j < var_name_array.size(); ++j) {
                 auto var_name = var_name_array[j]->getText();
-                scope.registerVar(var_name, treated_var_data_array[j]);
+                scope.registerVar(var_name, visitTest(var_data_array[j]).as<Var>());
             }
         }
         return Var().setEmpty();
