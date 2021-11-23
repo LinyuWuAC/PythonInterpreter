@@ -398,20 +398,8 @@ antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
     }
     else if (ctx->NUMBER()) {
         std::string temp = ctx->NUMBER()->getText();
-        if (temp.find('.') != temp.npos) {
-            double front = 0, back = 0;
-            for (int i = 0; i < temp.size(); ++i) {
-                if (temp[i] == '.')
-                    break;
-                front = front * 10 + temp[i] - '0';
-            }
-            for (int i = temp.size() - 1; i >= 0; --i) {
-                if (temp[i] == '.')
-                    break;
-                back = back / 10 + temp[i] - '0';
-            }
-            return Var().setFloat(front + back / 10);
-        }
+        if (temp.find('.') != temp.npos)
+            return Var().setFloat(std::stod(temp));
         return Var().setInt(BigInt::int2048(temp));
     }
     else if (ctx->NONE())

@@ -133,8 +133,11 @@ public:
             return BigInt::int2048(bool_data);
         if (type == 1)
             return int_data;
-        if (type == 2)
-            return BigInt::int2048((long long)(float_data));
+        if (type == 2) {
+            std::string temp = std::to_string(float_data);
+            temp = temp.substr(0, temp.size() - 7);
+            return BigInt::int2048(temp);
+        }
         if (type == 3)
             return BigInt::int2048(str_data);
         return BigInt::int2048();
@@ -147,26 +150,8 @@ public:
             return int_data.toDouble();
         if (type == 2)
             return float_data;
-        if (type == 3) {
-            if (str_data.find('.') == str_data.npos) {
-                double res = 0, flag = (str_data[0] == '-' ? -1 : 1);
-                for (int i = 0 + (str_data[0] == '-'); i < str_data.size(); ++i)
-                    res = res * 10 + str_data[i] - '0';
-                return res * flag;
-            }
-            double front = 0, back = 0, flag = (str_data[0] == '-' ? -1 : 1);
-            for (int i = 0 + (str_data[0] == '-'); i < str_data.size(); ++i) {
-                if (str_data[i] == '.')
-                    break;
-                front = front * 10 + str_data[i] - '0';
-            }
-            for (int i = str_data.size() - 1; i >= 0; --i) {
-                if (str_data[i] == '.')
-                    break;
-                back = back / 10 + str_data[i] - '0';
-            }
-            return flag * (front + back / 10);
-        }
+        if (type == 3)
+            return std::stod(str_data);
         return 0;
     }
 
