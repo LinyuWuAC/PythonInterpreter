@@ -87,6 +87,7 @@ namespace BigInt {
                 a.resize(n);
             }
         }
+        setzero();
     }
 
     void int2048::setzero() {
@@ -185,10 +186,6 @@ namespace BigInt {
         if (current_value)
             a.push_back(current_value);
         n = a.size();
-        if (!n) {
-            n = 1;
-            a.push_back(0);
-        }
         setzero();
     }
 
