@@ -232,7 +232,9 @@ public:
         int max_type = std::max(a.type, b.type);
         if (max_type == 2)
             return Var().setFloat(a.toFloat() / b.toFloat());
-        return Var().setInt(a.toInt() / b.toInt());
+        if (max_type == 1)
+            return Var().setInt(a.toInt() / b.toInt());
+        return Var().setBool(a.toBool() / b.toBool());
     }
 
     friend Var operator % (const Var &a, const Var &b) {
@@ -320,8 +322,15 @@ public:
         local_var_stack.emplace_back();
     }
 
+    void registerVarInNew(const std::string &var_name, const Var &var) {
+        local_var_stack.back()[var_name] = var;
+    }
+
     void registerVar(const std::string &var_name, const Var &var) {
-        if (global_var_table.count(var_name) || local_var_stack.empty())
+        if (!local_var_stack.empty() && local_var_stack.back().count(var_name)) {
+            local_var_stack.back()[var_name] = var;
+        }
+        else if (global_var_table.count(var_name) || local_var_stack.empty())
             global_var_table[var_name] = var;
         else
             local_var_stack.back()[var_name] = var;

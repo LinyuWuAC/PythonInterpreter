@@ -144,6 +144,8 @@ antlrcpp::Any EvalVisitor::visitCompound_stmt(Python3Parser::Compound_stmtContex
     return visitChildren(ctx);
 }
 
+// function: visit th if statement
+// return value: a Var showing messages like some signals including continue, break, return, return with value and empty
 antlrcpp::Any EvalVisitor::visitIf_stmt(Python3Parser::If_stmtContext *ctx) {
     auto test_array = ctx->test();
     auto suite_array = ctx->suite();
@@ -156,11 +158,16 @@ antlrcpp::Any EvalVisitor::visitIf_stmt(Python3Parser::If_stmtContext *ctx) {
                 return flag;
             break;
         }
-    if (suite_array.size() > test_array.size() && !last)
-        return visitSuite(suite_array.back());
+    if (suite_array.size() > test_array.size() && !last) {
+        auto flag = visitSuite(suite_array.back()).as<Var>();
+        if (flag.type != -1)
+            return flag;
+    }
     return Var().setEmpty();
 }
 
+// function: visit the while statement
+// return value: a Var showing messages like some signals including return, return with value and empty
 antlrcpp::Any EvalVisitor::visitWhile_stmt(Python3Parser::While_stmtContext *ctx) {
     auto test = ctx->test();
     auto suite = ctx->suite();
@@ -325,16 +332,16 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
         auto para_array = def.queryFuncPara(func_name);
         auto init_array = def.queryFuncInit(func_name);
         auto args_array = visitTrailer(ctx->trailer()).as<std::vector<std::pair<std::string, Var>>>(); // throw
+        scope.intoFunc();
         for (int i = 0; i < para_array.size(); ++i)
             if (init_array[i].type != -1)
-                scope.registerVar(para_array[i], init_array[i]);
-        scope.intoFunc();
+                scope.registerVarInNew(para_array[i], init_array[i]);
         if (!args_array.empty()) {
             for (int i = 0; i < args_array.size(); ++i)
                 if (args_array[i].first.empty())
-                    scope.registerVar(para_array[i], args_array[i].second);
+                    scope.registerVarInNew(para_array[i], args_array[i].second);
                 else
-                    scope.registerVar(args_array[i].first, args_array[i].second);
+                    scope.registerVarInNew(args_array[i].first, args_array[i].second);
         }
         auto res = visitSuite(def.queryFuncSuite(func_name)).as<Var>();
         scope.outOfFunc();
@@ -434,6 +441,13 @@ antlrcpp::Any EvalVisitor::visitArglist(Python3Parser::ArglistContext *ctx) {
     return treated_arg_array;
 }
 
+/*
+ *  function:
+ *      deal with the def argument
+ *  return value:
+ *      pair: name and value
+ *      pair: "" and value
+ */
 antlrcpp::Any EvalVisitor::visitArgument(Python3Parser::ArgumentContext *ctx) {
     auto test_array = ctx->test();
     if (test_array.size() == 1) {

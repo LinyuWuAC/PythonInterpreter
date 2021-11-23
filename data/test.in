@@ -1,5 +1,6 @@
-i = 0
-if i:
-	print(1)
-elif not i:
-	print(0)
+def temp(a = 3, b = 5):
+	a -= 1
+	b -= 1
+
+a, b = 2, 1
+print(a, b)
