@@ -196,7 +196,7 @@ public:
             std::string res = "";
             std::string delta = a.type == 3 ? a.str_data : b.str_data;
             for (int i = 0; i < times; ++i)
-                res = res + delta;
+                res += delta;
             return Var().setStr(res);
         }
         if (a.type == 3 || b.type == 3)
