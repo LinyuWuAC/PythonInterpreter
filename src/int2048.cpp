@@ -182,6 +182,8 @@ namespace BigInt {
         }
         if (current_value)
             a.push_back(current_value);
+        while (!a.empty() && !a.back())
+            a.pop_back();
         n = a.size();
         setzero();
     }
