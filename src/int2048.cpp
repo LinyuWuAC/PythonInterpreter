@@ -172,7 +172,7 @@ namespace BigInt {
         n = 0;
         sign = (s[0] == '-' ? -1 : 1);
         int current_value = 0;
-        for (int i = s.size() - 1, j = 0; i >= (s[0] == '-' ? 1 : 0); --i, ++j) {
+        for (int i = s.size() - 1, j = 0; i >= !std::isdigit(s[0]); --i, ++j) {
             current_value += (s[i] - '0') * decimal_digit[j];
             if (j == 3) {
                 j = -1;
