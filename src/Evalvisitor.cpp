@@ -207,9 +207,7 @@ antlrcpp::Any EvalVisitor::visitOr_test(Python3Parser::Or_testContext *ctx) {
     auto and_array = ctx->and_test();
     if (and_array.size() == 1)
         return visitAnd_test(and_array[0]);
-    bool state = visitAnd_test(and_array[0]).as<Var>().toBool();
-    if (state)
-        return Var().setBool(true);
+    bool state = false;
     for (auto x : and_array) {
         state |= visitAnd_test(x).as<Var>().toBool();
         if (state)
@@ -222,9 +220,7 @@ antlrcpp::Any EvalVisitor::visitAnd_test(Python3Parser::And_testContext *ctx) {
     auto not_array = ctx->not_test();
     if (not_array.size() == 1)
         return visitNot_test(not_array[0]);
-    bool state = visitNot_test(not_array[0]).as<Var>().toBool();
-    if (!state)
-        return Var().setBool(false);
+    bool state = true;
     for (auto x : not_array) {
         state &= visitNot_test(x).as<Var>().toBool();
         if (!state)
