@@ -241,7 +241,7 @@ namespace BigInt {
                 ++c.a[i + 1];
             }
         for (int i = b.n; i < c.n; ++i)
-            if (c.a[i] <= BASE) {
+            if (c.a[i] >= BASE) {
                 c.a[i] -= BASE;
                 if (i == c.n - 1)
                     c.a.push_back(0);
