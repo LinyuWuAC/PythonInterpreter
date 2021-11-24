@@ -131,7 +131,7 @@ antlrcpp::Any EvalVisitor::visitFlow_stmt(Python3Parser::Flow_stmtContext *ctx) 
     auto testlist = ctx->return_stmt()->testlist();
     if (!testlist)
         return Var().setReturn();
-    auto test = ctx->return_stmt()->testlist()->test();
+    auto test = testlist->test();
     if (test.size() == 1)
         return visitTest(test[0]);
     for (auto x : test)
@@ -350,15 +350,6 @@ antlrcpp::Any EvalVisitor::visitAtom_expr(Python3Parser::Atom_exprContext *ctx) 
     }
     auto args_array = visitTrailer(ctx->trailer()).as<std::vector<std::pair<std::string, Var>>>();
     if (func_name == "print") {
-        if (!return_tests.empty()) {
-            for (auto x : return_tests) {
-                x.as<Var>().print();
-                std::cout << " ";
-            }
-            std::cout << std::endl;
-            return_tests.clear();
-            return Var().setEmpty();
-        }
         for (auto x : args_array) {
             x.second.print();
             std::cout << " ";
@@ -443,7 +434,13 @@ antlrcpp::Any EvalVisitor::visitArglist(Python3Parser::ArglistContext *ctx) {
     std::vector<std::pair<std::string, Var>> treated_arg_array;
     for (auto x : arg_array) {
         auto temp = visitArgument(x).as<std::pair<std::string, Var>>();
-        treated_arg_array.push_back(temp);
+        if (!return_tests.empty()) {
+            for (auto x : return_tests)
+                treated_arg_array.push_back(std::make_pair("", x.as<Var>()));
+            return_tests.clear();
+        }
+        else
+            treated_arg_array.push_back(temp);
     }
     return treated_arg_array;
 }
