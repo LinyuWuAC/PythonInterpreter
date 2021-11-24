@@ -7,7 +7,7 @@
 namespace BigInt {
 
     #define MAXN 300000
-    #define BASE 10000
+    #define BASE 10
 
     const double Pi = acos(-1.0) ;
 
@@ -173,12 +173,9 @@ namespace BigInt {
         sign = (s[0] == '-' ? -1 : 1);
         int current_value = 0;
         for (int i = s.size() - 1, j = 0; i >= !std::isdigit(s[0]); --i, ++j) {
-            current_value += (s[i] - '0') * decimal_digit[j];
-            if (j == 3) {
-                j = -1;
-                a.push_back(current_value);
-                current_value = 0;
-            }
+            current_value += (s[i] - '0');
+            a.push_back(current_value);
+            current_value = 0;
         }
         if (current_value)
             a.push_back(current_value);
@@ -222,7 +219,7 @@ namespace BigInt {
         res = res + std::to_string(a[n - 1]);
         for (int i = n - 2; i >= 0; --i) {
             int digit = calculatedigit(a[i]);
-            for (int j = 1; j <= 4 - digit; ++j)
+            for (int j = 1; j <= 1 - digit; ++j)
                 res = res + "0";
             res = res + std::to_string(a[i]);
         }
@@ -518,7 +515,7 @@ namespace BigInt {
         output(a.a[a.n - 1]);
         for (int i = a.n - 2; i >= 0; --i) {
             int digit = calculatedigit(a.a[i]);
-            for (int j = 1; j <= 4 - digit; ++j)
+            for (int j = 1; j <= 1 - digit; ++j)
                 putchar('0');
             output(a.a[i]);
         }

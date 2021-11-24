@@ -6,7 +6,7 @@
 #define PYTHON_INTERPRETER_SCOPE_H
 
 #include <iostream>
-#include <map>
+#include <unordered_map>
 #include <cstring>
 #include <any>
 #include <stack>
@@ -237,6 +237,26 @@ public:
         return a.bool_data < b.bool_data;
     }
 
+    Var operator += (const Var &b) {
+        return *this = *this + b;
+    }
+
+    Var operator -= (const Var &b) {
+        return *this = *this - b;
+    }
+
+    Var operator *= (const Var &b) {
+        return *this = *this * b;
+    }
+
+    Var operator /= (const Var &b) {
+        return *this = *this / b;
+    }
+
+    Var operator %= (const Var &b) {
+        return *this = *this % b;
+    }
+
     friend bool operator <= (const Var &a, const Var &b) {
         if (a.type == 3 && b.type == 3)
             return a.str_data <= b.str_data;
@@ -294,8 +314,8 @@ public:
 
 class Scope {
 private:
-    std::map<std::string, Var> global_var_table;
-    std::deque<std::map<std::string, Var>> local_var_stack;
+    std::unordered_map<std::string, Var> global_var_table;
+    std::deque<std::unordered_map<std::string, Var>> local_var_stack;
 public:
     Scope(): global_var_table(), local_var_stack() {}
 
@@ -309,10 +329,15 @@ public:
 
     void registerVar(const std::string &var_name, const Var &var) {
         if (!local_var_stack.empty() && local_var_stack.back().count(var_name)) {
+//            std::cout << "local: " << var_name << std::endl;
             local_var_stack.back()[var_name] = var;
         }
-        else if (global_var_table.count(var_name) || local_var_stack.empty())
+        else if (global_var_table.count(var_name) || local_var_stack.empty()) {
+//            std::cout << "global: " << var_name << " ";
+//            var.print();
+//            puts("");
             global_var_table[var_name] = var;
+        }
         else
             local_var_stack.back()[var_name] = var;
     }

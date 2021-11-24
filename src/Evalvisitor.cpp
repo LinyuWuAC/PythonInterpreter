@@ -277,9 +277,9 @@ antlrcpp::Any EvalVisitor::visitArith_expr(Python3Parser::Arith_exprContext *ctx
     for (int i = 0; i < op_array.size(); ++i) {
         std::string temp = op_array[i]->getText();
         if (temp == "+")
-            var_data = var_data + visitTerm(term_array[i + 1]);
+            var_data += visitTerm(term_array[i + 1]);
         else if (temp == "-")
-            var_data = var_data - visitTerm(term_array[i + 1]);
+            var_data -= visitTerm(term_array[i + 1]);
     }
     return var_data;
 }
@@ -293,18 +293,18 @@ antlrcpp::Any EvalVisitor::visitTerm(Python3Parser::TermContext *ctx) {
     for (int i = 0; i < op_array.size(); ++i) {
         std::string temp = op_array[i]->getText();
         if (temp == "*") {
-            res = res * visitFactor(factor_array[i + 1]);
+            res *= visitFactor(factor_array[i + 1]);
         }
         else if (temp == "//" ) {
-            res = res / visitFactor(factor_array[i + 1]);
+            res /= visitFactor(factor_array[i + 1]);
         }
         else if (temp == "/") {
             if (res.type != 2)
                 res.setFloat(res.toFloat());
-            res = res / visitFactor(factor_array[i + 1]);
+            res /= visitFactor(factor_array[i + 1]);
         }
         else if (temp == "%")
-            res = res % visitFactor(factor_array[i + 1]).as<Var>();
+            res %= visitFactor(factor_array[i + 1]).as<Var>();
     }
     return res;
 }
@@ -317,9 +317,9 @@ antlrcpp::Any EvalVisitor::visitFactor(Python3Parser::FactorContext *ctx) {
     auto factor = ctx->factor();
     auto atom_expr = ctx->atom_expr();
     if (factor)
-        res = res * visitFactor(factor).as<Var>();
+        res *= visitFactor(factor).as<Var>();
     if (atom_expr)
-        res = res * visitAtom_expr(atom_expr).as<Var>();
+        res *= visitAtom_expr(atom_expr).as<Var>();
     return res;
 }
 
@@ -404,7 +404,7 @@ antlrcpp::Any EvalVisitor::visitAtom(Python3Parser::AtomContext *ctx) {
     std::string res = "";
     for (auto x: strings) {
         std::string temp = x->getText();
-        res = res + temp.substr(1, temp.size() - 2);
+        res += temp.substr(1, temp.size() - 2);
     }
     return Var().setStr(res);
 }
