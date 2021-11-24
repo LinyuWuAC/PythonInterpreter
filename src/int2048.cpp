@@ -359,7 +359,7 @@ namespace BigInt {
         c.sign = a.sign * b.sign;
         for (int i = 0; i < c.n; ++i)
             temporary_lint[i] = 0;
-        for (int i = 0; i < c.n; ++i) {
+        for (int i = 0; i < n; ++i) {
             temporary_lint[i] += (lint)(temporary_x[i].x + 0.5);
             if (temporary_lint[i] >= BASE) {
                 temporary_lint[i + 1] = temporary_lint[i] / BASE;
