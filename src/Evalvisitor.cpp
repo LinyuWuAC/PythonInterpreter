@@ -134,7 +134,6 @@ antlrcpp::Any EvalVisitor::visitFlow_stmt(Python3Parser::Flow_stmtContext *ctx) 
     auto test = ctx->return_stmt()->testlist()->test();
     if (test.size() == 1)
         return visitTest(test[0]);
-    return_tests.clear();
     for (auto x : test)
         return_tests.push_back(visitTest(x));
     return Var().setReturn();

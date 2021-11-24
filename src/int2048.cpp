@@ -535,6 +535,4 @@ namespace BigInt {
         *this = *this % b;
         return *this;
     }
-
-
 }

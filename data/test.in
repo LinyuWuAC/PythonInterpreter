@@ -1,1 +1,6 @@
-print(int("+0000000000000000000123"))
+def foo():
+	a += 1
+	return a, a
+
+a = 1
+print(foo(), foo())
