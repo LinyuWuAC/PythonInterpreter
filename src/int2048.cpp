@@ -292,8 +292,12 @@ namespace BigInt {
             c.setzero();
             return c;
         }
-        else
-            return ADD(a, b);
+        else {
+            if (smaller(b, a))
+                return ADD(a, b);
+            else
+                return ADD(b, a);
+        }
     }
 
     int2048 &int2048::operator += (const int2048 &b) {
@@ -304,7 +308,10 @@ namespace BigInt {
     int2048 operator - (const int2048 &a, const int2048 &b) {
         int2048 c;
         if (a.sign * b.sign < 0) {
-            c = ADD(a, b);
+            if (smaller(a, b))
+                c = ADD(b, a);
+            else
+                c = ADD(a, b);
             if (b.sign < 0)
                 c.sign = 1;
             else
